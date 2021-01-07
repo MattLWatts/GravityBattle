@@ -18,7 +18,7 @@ APlayerSpaceship::APlayerSpaceship()
     verticalVelocity = 0.0f;
     horizontalVelocity = 0.0f;
     bIsShooting = false;
-    weaponFireRate = 0.25f;
+    weaponFireRate = 0.4f;
     lastShotDelta = 0.0f;
     playerScore = 0.0f;
     currentGravity = 0.0f;
@@ -73,7 +73,7 @@ void APlayerSpaceship::Tick(float DeltaTime)
         float xValue = currentPos.X;
         float yValue = currentPos.Y;
 
-        // Check virtical bounds to see if movement is legal
+        // Check vertical bounds to see if movement is legal
         if (currentPos.X + (verticalVelocity * DeltaTime) < playerVerticalBounds &&
             currentPos.X + (verticalVelocity * DeltaTime) > -playerVerticalBounds)
         {
@@ -89,7 +89,7 @@ void APlayerSpaceship::Tick(float DeltaTime)
         
         
         // Calculate new position using velocity
-        newPos = FVector(xValue, yValue, 0.0f);
+        newPos = FVector(xValue, yValue, 30.0f);
 
         // Move actor to new position
         this->SetActorLocation(newPos);
@@ -190,19 +190,32 @@ void APlayerSpaceship::OnCollision(AActor* player, AActor* other)
 {
     if (other != nullptr)
     {
+        // Check for collision
         if (other->ActorHasTag("Asteroid"))
         {
             // Decrease health
             other->Destroy();
             playerDamageSound->Play();
-            currentHealth -= 10;
+            currentHealth -= 10.0f;
         }
         if (other->ActorHasTag("SpinningAsteroid"))
         {
             // Decrease health
             other->Destroy();
             playerDamageSound->Play();
-            currentHealth -= 5;
+            currentHealth -= 5.0f;
+        }
+        if (other->ActorHasTag("EnemyBullet")) 
+        {
+            other->Destroy();
+            playerDamageSound->Play();
+            currentHealth -= 5.0f;
+        }
+        if (other->ActorHasTag("Enemy")) 
+        {
+            other->Destroy();
+            playerDamageSound->Play();
+            currentHealth -= 10.0f;
         }
     }
 }

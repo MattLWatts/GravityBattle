@@ -19,6 +19,7 @@ class GRAVITYBATTLE_API AGravityBattleGameModeBase : public AGameModeBase
 public:
     AGravityBattleGameModeBase();
 
+    // Menu functions
     UFUNCTION(BlueprintCallable)
         void LoadGame();
 

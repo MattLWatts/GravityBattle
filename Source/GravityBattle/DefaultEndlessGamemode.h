@@ -10,6 +10,7 @@
 #include "GravityBattleSaveGame.h"
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/UserWidget.h"
+#include "Enemy.h"
 
 #include "DefaultEndlessGamemode.generated.h"
 
@@ -25,7 +26,7 @@ public:
     // Constructor
     ADefaultEndlessGamemode();
 
-    // Asteroid object to be spawned in
+    // Asteroid and enemy objects to be spawned in
     UPROPERTY(EditAnywhere)
         TSubclassOf<AAsteroid> asteroidArray[5];
 
@@ -33,10 +34,21 @@ public:
         TSubclassOf<ASpinningAsteroid> spinningAsteroid;
 
     UPROPERTY(EditAnywhere)
+        TSubclassOf<AEnemy> enemyShip;
+
+
+
+    UPROPERTY(EditAnywhere)
         UAudioComponent* backgroundMusic;
+
+
+    // Timers used in the spawning of each asteroid/enemy
 
     UPROPERTY(EditAnywhere)
         float asteroidSpawnInterval;
+
+    UPROPERTY(EditAnywhere)
+        float spinningAsteroidSpawnInterval;
 
     UPROPERTY(EditAnywhere)
         float asteroidSpawnTime;
@@ -45,7 +57,10 @@ public:
         float spinningAsteroidSpawnTime;
 
     UPROPERTY(EditAnywhere)
-        int asteroidsSpawned;
+        float enemySpawnTime;
+
+    UPROPERTY(EditAnywhere)
+        float enemySpawnTimeInterval;
 
     // UI Elements
 
@@ -82,7 +97,7 @@ private:
 
     void SaveGame();
 
-    FActorSpawnParameters asteroidParams;
+    FActorSpawnParameters spawnParams;
 
     // Current game time
     float gameTimer;
@@ -91,10 +106,14 @@ private:
 
     int asteroidIndex;
 
+    // Enemy spawning functions
     void SpawnAsteroid();
 
     void SpawnSpinningAsteroid();
 
+    void SpawnEnemy();
+
     APlayerController* playerReference;
 
+    AActor* newEnemy;
 };

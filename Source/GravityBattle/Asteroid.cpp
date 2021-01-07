@@ -27,13 +27,16 @@ void AAsteroid::BeginPlay()
 
     asteroidDestroyedSound->Deactivate();
 
+    // Add collision function
     OnActorBeginOverlap.AddDynamic(this, &AAsteroid::OnCollision);
 
+    // Get player pointer
     playerRef = Cast<APlayerSpaceship>(UGameplayStatics::GetPlayerPawn(this, 0));
 }
 
 void AAsteroid::GetNewPosition(FVector* newPosition, float DeltaTime)
 {
+    // Checks for gravity being present
     if (playerRef->currentGravity > 0.5f)
     {
         // Calculates new position
@@ -48,7 +51,7 @@ void AAsteroid::GetNewPosition(FVector* newPosition, float DeltaTime)
 
 void AAsteroid::StartingPosAndRot()
 {
-    currPos = FVector(1300.0f, FMath::RandRange(-350.0f, 350.0f), 0.0f);
+    currPos = FVector(1300.0f, FMath::RandRange(-350.0f, 350.0f), -30.0f);
     this->SetActorRotation(FRotator(FMath::RandRange(0.0f, 360.0f), FMath::RandRange(0.0f, 360.0f), FMath::RandRange(0.0f, 360.0f)));
 }
 
@@ -110,6 +113,7 @@ void AAsteroid::OnCollision(AActor* asteroid, AActor* other)
 {
     if (other != nullptr)
     {
+        // Checks for bullet collision
         if (other->ActorHasTag("Bullet"))
         {
             other->Destroy();

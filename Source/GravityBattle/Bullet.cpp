@@ -47,11 +47,23 @@ void ABullet::Tick(float DeltaTime)
         newPos = FVector(currPos.X + (speed * DeltaTime), currPos.Y, currPos.Z);
     }
 
-    // Checks if new position isout of screen range
-    if (newPos.X > screenEdge)
+    // Checks whether screen edge should be treated as < || >
+    if (screenEdge < 0) 
     {
-        // Destroys actor
-        this->Destroy();
+        if (newPos.X < screenEdge)
+        {
+            // Destroys actor
+            this->Destroy();
+        }
+    }
+    else 
+    {
+        // Checks if new position isout of screen range
+        if (newPos.X > screenEdge)
+        {
+            // Destroys actor
+            this->Destroy();
+        }
     }
 
     // Gives bullet new position
@@ -76,6 +88,6 @@ void ABullet::InitialiseComponents()
 // Collision handling function
 void ABullet::OnCollision(AActor* bullet, AActor* other)
 {
-
+    // Collision handled externally
 }
 
